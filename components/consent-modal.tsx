@@ -24,7 +24,9 @@ export function ConsentModal({ onComplete }: ConsentModalProps) {
     linkedin: "",
     github: "",
     instagram: "",
+    x: "",
     certificates: [""],
+    consent: agreed
   })
 
   const handleConsentNext = () => {
@@ -57,6 +59,7 @@ export function ConsentModal({ onComplete }: ConsentModalProps) {
   const handleSubmit = () => {
     const cleanedData = {
       ...formData,
+      consent: agreed,
       certificates: formData.certificates.filter((cert) => cert.trim() !== ""),
     }
     onComplete(cleanedData)
@@ -154,6 +157,19 @@ export function ConsentModal({ onComplete }: ConsentModalProps) {
                   placeholder="https://instagram.com/your-username"
                   value={formData.instagram}
                   onChange={(e) => setFormData((prev) => ({ ...prev, instagram: e.target.value }))}
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <Label htmlFor="x" className="text-sm font-medium text-gray-700">
+                  X Profile
+                </Label>
+                <Input
+                  id="x"
+                  type="url"
+                  placeholder="https://x.com/your-username"
+                  value={formData.x}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, x: e.target.value }))}
                   className="mt-1"
                 />
               </div>

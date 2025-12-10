@@ -10,6 +10,7 @@ export function Header() {
 
   const navItems = [
     { href: "/", label: "Home" },
+    { href: "/login", label: "Login"},
     { href: "#", label: "Top Bottom Vote" },
     { href: "#", label: "Log" },
     { href: "#", label: "Room" },
@@ -19,6 +20,7 @@ export function Header() {
     { href: "#", label: "View" },
     { href: "#", label: "Candidate" },
     { href: "/profile", label: "Profile" },
+    { href: "/skill-map", label: "Skill Map" },
   ]
 
   return (

@@ -10,13 +10,13 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.82 0.09 250);
+  --primary-foreground: oklch(0.2 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
+  --accent: oklch(0.488 0.243 264.376);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.577 0.245 27.325);
@@ -33,7 +33,7 @@
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent: oklch(0.488 0.243 264.376);
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
@@ -121,5 +121,54 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* <CHANGE> RPG dashboard specific animations and styling */
+@layer components {
+  .neon-glow {
+    @apply shadow-lg;
+    box-shadow: 0 0 20px rgba(var(--neon-glow-rgb), 0.6);
+  }
+
+  .skill-node {
+    @apply transition-all duration-300 cursor-pointer;
+  }
+
+  .skill-node:hover {
+    @apply scale-110;
+    filter: drop-shadow(0 0 12px currentColor);
+  }
+
+  .grid-bg {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .stat-bar {
+    @apply relative h-2 bg-secondary rounded overflow-hidden;
+  }
+
+  .stat-bar-fill {
+    @apply h-full transition-all duration-500 rounded;
+  }
+
+  .pulse-glow {
+    animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  .level-badge {
+    @apply inline-flex items-center justify-center w-12 h-12 rounded-full font-bold text-sm border-2;
   }
 }

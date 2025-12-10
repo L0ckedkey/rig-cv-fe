@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ConsentModal } from "@/components/consent-modal"
 import { Header } from "@/components/header"
+import { useRouter } from "next/navigation"
 
 export default function HomePage() {
   const [showModal, setShowModal] = useState(true)
@@ -13,12 +14,89 @@ export default function HomePage() {
     github: "",
     instagram: "",
     certificates: [],
+    consent: ""
   })
+  const [userData, setUserData] = useState<any>(null);
 
-  const handleModalComplete = (links: any) => {
-    setUserLinks(links)
-    setShowModal(false)
+  const router = useRouter()
+
+   useEffect(() => {
+      const fetchProfile = async () => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.warn("No token found — redirect to login");
+          router.push('/login')
+          return;
+        }
+  
+        try {
+          const res = await fetch("http://localhost:3000/trainee/profile", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+  
+          if (!res.ok) {
+            throw new Error("Unauthorized");
+          }
+  
+          const data = await res.json();
+          if(data.consent == 'true' || data.consent){
+            setShowModal(!data.consent)
+          }
+        } catch (err) {
+          console.error("Error fetching profile:", err);
+          localStorage.removeItem("token");
+          router.push('/login')
+        }
+      };
+  
+      fetchProfile();
+    }, []);
+
+  const handleModalComplete = async (links: any) => {
+  setUserLinks(links);
+  setShowModal(false);
+
+  const token = localStorage.getItem("token");
+
+  try {
+    const res = await fetch("http://localhost:3000/trainee", {
+      method: "PUT",
+      
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        consent: links.consent,
+        urllinkedin: links.linkedin,
+        urlinstagram: links.instagram,
+        urlgithub: links.github,
+        urlx: links.x,
+        ceritificates: links.certificates
+      }),
+    });
+
+    if (!res.ok) {
+      throw new Error("Unauthorized");
+    }
+
+    const data = await res.json();
+    setUserData(data);
+
+    if (data.consent === true) {
+      setShowModal(false);
+    } else {
+      setShowModal(true);
+    }
+
+  } catch (err) {
+    console.error("Error fetching profile:", err);
+    router.push('/login')
   }
+};
+
 
   return (
     <div className="min-h-screen bg-gray-50">
