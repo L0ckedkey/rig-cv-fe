@@ -9,109 +9,71 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
   ResponsiveContainer,
   RadarChart,
   PolarGrid,
   PolarAngleAxis,
   PolarRadiusAxis,
   Radar,
+  Tooltip
 } from "recharts"
 
-export default function AnalyticsPanel() {
-  const progressData = [
-    { day: "1", progress: 20 },
-    { day: "3", progress: 35 },
-    { day: "5", progress: 45 },
-    { day: "7", progress: 55 },
-    { day: "10", progress: 68 },
-    { day: "14", progress: 78 },
-  ]
+export default function AnalyticsPanel({traineeScore, radarData}) {
+  
+  const MIN_AXIS = 3;
 
-  const skillBalanceData = [
-    { skill: "Hard", value: 78 },
-    { skill: "Soft", value: 65 },
-    { skill: "Growth", value: 82 },
-  ]
+  const normalizedRadarData = (() => {
+    if (!radarData || radarData.length >= MIN_AXIS) return radarData;
 
-  const weeklyData = [
-    { week: "W1", value: 65 },
-    { week: "W2", value: 78 },
-  ]
+    const dummyCount = MIN_AXIS - radarData.length;
 
-  const heatmapDays = Array.from({ length: 14 }, (_, i) => ({
-    day: i + 1,
-    activity: Math.floor(Math.random() * 5),
-  }))
+    const dummyData = Array.from({ length: dummyCount }, (_, i) => ({
+      subjectName: "",
+      point: 0
+    }));
 
-  const getHeatmapColor = (activity: number) => {
-    const colors = ["#1f2937", "#10b981", "#34d399", "#6ee7b7", "#a7f3d0"]
-    return colors[activity] || colors[0]
-  }
+    return [...radarData, ...dummyData];
+  })();
 
   return (
     <div className="space-y-4">
       {/* 30-Day Progress */}
       <Card className="p-4 border-accent/30 bg-card/80 backdrop-blur">
-        <h4 className="text-sm font-bold mb-4">30-Day Progress</h4>
+        <h4 className="text-sm font-bold mb-4">Pre Training Score</h4>
         <ResponsiveContainer width="100%" height={200}>
-          <LineChart data={progressData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-            <XAxis dataKey="day" stroke="rgba(255,255,255,0.5)" />
-            <YAxis stroke="rgba(255,255,255,0.5)" />
-            <Tooltip
-              contentStyle={{ backgroundColor: "rgba(20,20,30,0.9)", border: "1px solid rgba(255,255,255,0.2)" }}
+          <BarChart data={traineeScore}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <YAxis
+              domain={[0, 100]}
+              ticks={[0, 20, 40, 60, 80, 100]}
+              tick={false}
+              hide
             />
-            <Line type="monotone" dataKey="progress" stroke="#a78bfa" strokeWidth={2} dot={{ fill: "#a78bfa" }} />
-          </LineChart>
+            <XAxis dataKey="subjectName" tickFormatter={(value) =>
+              value.length > 10 ? `${value.slice(0, 10)}…` : value
+            } />
+            {/* <YAxis /> */}
+            <Tooltip
+              contentStyle={{ backgroundColor: "rgba(239, 239, 240,1)", border: "1px solid rgba(255,255,255,0.2)" }}
+            />
+            <Bar dataKey="averageScore" fill="#a78bfa" radius={[4, 4, 0, 0]} />
+          </BarChart>
         </ResponsiveContainer>
       </Card>
 
       {/* Radar Chart */}
       <Card className="p-4 border-accent/30 bg-card/80 backdrop-blur">
-        <h4 className="text-sm font-bold mb-4">Skill Balance</h4>
+        <h4 className="text-sm font-bold mb-4">Top 5 Skills</h4>
         <ResponsiveContainer width="100%" height={200}>
-          <RadarChart data={skillBalanceData}>
-            <PolarGrid stroke="rgba(255,255,255,0.1)" />
-            <PolarAngleAxis dataKey="skill" stroke="rgba(255,255,255,0.5)" />
-            <PolarRadiusAxis stroke="rgba(255,255,255,0.3)" />
-            <Radar name="Score" dataKey="value" stroke="#a78bfa" fill="#a78bfa" fillOpacity={0.3} />
+          <RadarChart data={normalizedRadarData} style={{ aspectRatio: 1 }}>
+            <PolarGrid/>
+            <PolarAngleAxis dataKey="subjectName"  />
+            <Radar name="Score" dataKey="point" stroke="#a78bfa" fill="#a78bfa" fillOpacity={0.3} />
             <Tooltip
-              contentStyle={{ backgroundColor: "rgba(20,20,30,0.9)", border: "1px solid rgba(255,255,255,0.2)" }}
+              contentStyle={{ backgroundColor: "rgba(239, 239, 240,1)", border: "1px solid rgba(255,255,255,0.2)" }}
             />
           </RadarChart>
         </ResponsiveContainer>
-      </Card>
-
-      {/* Weekly Performance */}
-      <Card className="p-4 border-accent/30 bg-card/80 backdrop-blur">
-        <h4 className="text-sm font-bold mb-4">Weekly Performance</h4>
-        <ResponsiveContainer width="100%" height={150}>
-          <BarChart data={weeklyData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-            <XAxis dataKey="week" stroke="rgba(255,255,255,0.5)" />
-            <YAxis stroke="rgba(255,255,255,0.5)" />
-            <Tooltip
-              contentStyle={{ backgroundColor: "rgba(20,20,30,0.9)", border: "1px solid rgba(255,255,255,0.2)" }}
-            />
-            <Bar dataKey="value" fill="#a78bfa" radius={[4, 4, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
-      </Card>
-
-      {/* Activity Heatmap */}
-      <Card className="p-4 border-accent/30 bg-card/80 backdrop-blur">
-        <h4 className="text-sm font-bold mb-3">Activity Heatmap</h4>
-        <div className="grid grid-cols-7 gap-2">
-          {heatmapDays.map((day) => (
-            <div
-              key={day.day}
-              className="aspect-square rounded border border-border/30"
-              style={{ backgroundColor: getHeatmapColor(day.activity) }}
-              title={`Day ${day.day}: ${day.activity} activities`}
-            />
-          ))}
-        </div>
       </Card>
 
       {/* Milestones */}

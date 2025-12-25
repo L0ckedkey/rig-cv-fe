@@ -7,7 +7,13 @@ import EvidenceTracker from "@/components/evidence-tracker"
 import InterviewRecap from "@/components/interview-recap"
 import NodeDetailModal from "@/components/node-detail-modal"
 import SkillNodeMap from "@/components/skill-node-map"
+import { absentApi } from "@/lib/api/absent.api"
+import { caseSolvingApi } from "@/lib/api/case-solving.api"
+import { hardSkillPointApi } from "@/lib/api/hard-skill-point.api"
+import { socialMediaScrapper } from "@/lib/api/social-media-scrapper.api"
+import { softSkillPointApi } from "@/lib/api/soft-skill-point.api"
 import { traineeApi } from "@/lib/api/trainee.api"
+import { trainingApi } from "@/lib/api/training.api"
 import { useEffect, useState } from "react"
 
 export default function SkillMap({
@@ -21,6 +27,15 @@ export default function SkillMap({
   const [selectedNode, setSelectedNode] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [traineeData, setTraineeData] = useState(null)
+  const [absentTrainingData, setAbsentTrainingData] = useState(null)
+  const [traineeScoreData, setTraineeScoreData] = useState(null)
+  const [lastScrappedData, setLastScrappedData] = useState(null)
+  const [submissionData, setSubmissionData] = useState(null)
+  const [softSkillData, setSoftSkillData] = useState(null)
+  const [hardSkillData, setHardSkillData] = useState(null)
+  const [softSkillPoint, setSoftSkillPoint] = useState(null)
+  const [hardSkillPoint, setHardSkillPoint] = useState(null)
+  const [radarData, setRadarData] = useState(null)
 
   const handleNodeClick = (node) => {
     setSelectedNode(node)
@@ -30,8 +45,48 @@ export default function SkillMap({
   useEffect(() => {
     traineeApi.getTrainee().then((res) => {
         setTraineeData(res);
-        console.log(res)
     });
+
+    trainingApi.getTrainingCount().then((res) => {
+      absentApi.getValidAbsents().then((res2) => {
+        const data = {"trainingSession": res, "absent": res2}
+        setAbsentTrainingData(data)
+      })
+    })
+
+    caseSolvingApi.getScore().then((res) => {
+      setTraineeScoreData(res)
+      console.log(res)
+    })
+
+    socialMediaScrapper.getLastScrapped().then((res) => {
+      setLastScrappedData(res)
+    })
+
+    caseSolvingApi.getSubmission().then((res) => {
+      setSubmissionData(res)
+    })
+
+    softSkillPointApi.getDetail().then((res) => {
+      setSoftSkillData(res)
+    })
+
+    hardSkillPointApi.getDetail().then((res) => {
+      setHardSkillData(res)
+    })
+
+    softSkillPointApi.getPoint().then((res) => {
+      setSoftSkillPoint(res)
+    })
+
+    hardSkillPointApi.getPoint().then((res) => {
+      setHardSkillPoint(res)
+    })
+
+    hardSkillPointApi.getRadarData().then((res) => {
+      setRadarData(res)
+    })
+
   }, []);
 
   return (
@@ -43,17 +98,17 @@ export default function SkillMap({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Left Panel - Character Profile */}
             <div className="lg:col-span-3">
-              <CharacterProfile data={traineeData} />
+              <CharacterProfile data={traineeData} absentTrainingData={absentTrainingData} traineeScore={traineeScoreData} traineeHardSkillPoint={hardSkillPoint} traineeSoftSkillPoint={softSkillPoint}/>
             </div>
 
             {/* Center Panel - Skill Node Map */}
             <div className="lg:col-span-6">
-              <SkillNodeMap onNodeClick={handleNodeClick} />
+              <SkillNodeMap softSkillData={softSkillPoint} hardSkillData={hardSkillData} />
             </div>
 
             {/* Right Panel - Analytics */}
             <div className="lg:col-span-3">
-              <AnalyticsPanel />
+              <AnalyticsPanel traineeScore={traineeScoreData} radarData={radarData}/>
             </div>
           </div>
         )}
@@ -67,7 +122,7 @@ export default function SkillMap({
         {/* Evidence Tab Rendering */}
         {activeTab === "evidence" && (
           <div className="max-w-6xl mx-auto">
-            <EvidenceTracker userData={traineeData} />
+            <EvidenceTracker userData={traineeData} lastScrappedData={lastScrappedData} submissionData={submissionData} softSkillData={softSkillData} hardSkillData={hardSkillData}/>
           </div>
         )}
 

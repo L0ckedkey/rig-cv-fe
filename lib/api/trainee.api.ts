@@ -1,7 +1,9 @@
 import { fetcher } from "./fetcher";
 
 export const traineeApi = {
-  getTrainee: () => fetcher("trainee/T111"),
+  getTrainee: () => fetcher("trainee/T002"),
+
+  getTrainees: () => fetcher("trainee"),
 
   login: (data: { email: string; password: string }) =>
     fetcher("/auth/login", {

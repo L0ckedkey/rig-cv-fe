@@ -8,7 +8,7 @@ import { Header } from "@/components/header"
 import { useRouter } from "next/navigation"
 
 export default function HomePage() {
-  const [showModal, setShowModal] = useState(true)
+  const [showModal, setShowModal] = useState(false)
   const [userLinks, setUserLinks] = useState({
     linkedin: "",
     github: "",
@@ -25,7 +25,7 @@ export default function HomePage() {
         const token = localStorage.getItem("token");
         if (!token) {
           console.warn("No token found — redirect to login");
-          router.push('/login')
+          // router.push('/login')
           return;
         }
   
@@ -47,7 +47,7 @@ export default function HomePage() {
         } catch (err) {
           console.error("Error fetching profile:", err);
           localStorage.removeItem("token");
-          router.push('/login')
+          // router.push('/login')
         }
       };
   
@@ -93,7 +93,7 @@ export default function HomePage() {
 
   } catch (err) {
     console.error("Error fetching profile:", err);
-    router.push('/login')
+    // router.push('/login')
   }
 };
 

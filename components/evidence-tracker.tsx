@@ -3,7 +3,7 @@
 import { Card } from "@/components/ui/card"
 import { ExternalLink, GitBranch, Smartphone, Zap } from "lucide-react"
 
-function extractUsername(url:String) {
+function extractUsername(url: String) {
   try {
     const parts = url.split("/");
     let username = parts[parts.length - 1];
@@ -15,53 +15,51 @@ function extractUsername(url:String) {
     if (username.startsWith("@")) {
       username = username.substring(1);
     }
-
     return username;
   } catch (e) {
-    return null; 
+    return null;
   }
 }
 
-export default function EvidenceTracker({userData}) {
+const SocialRow = ({ label, url, lastScrapped }) => {
+  const username = url ? extractUsername(url) : "-";
+  const isActive = Boolean(url);
+
+  return (
+    <tr className="border-b border-border/30 hover:bg-secondary/30 transition-colors">
+      <td className="px-4 py-3 font-semibold text-foreground">{label}</td>
+
+      <td className="px-4 py-3 text-muted-foreground">{username}</td>
+
+      <td className="px-4 py-3">
+        <a
+          href={isActive ? url : undefined}
+          aria-disabled={!isActive}
+          className={`flex items-center gap-1 ${isActive
+            ? "text-accent hover:underline"
+            : "text-muted-foreground opacity-50 pointer-events-none cursor-default"
+            }`}
+        >
+          Visit <ExternalLink className="w-3 h-3" />
+        </a>
+      </td>
+
+      <td className="px-4 py-3 text-muted-foreground">{lastScrapped ? new Date(lastScrapped).toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      }) : "No Scrape Data"}</td>
+
+      <td className="px-4 py-3 font-semibold text-foreground">OTW</td>
+    </tr>
+  );
+};
+
+
+export default function EvidenceTracker({ userData, lastScrappedData, submissionData, softSkillData, hardSkillData }) {
   // Table 1: Social Media Scraping Data
-  const socialMediaData = [
-    {
-      id: 1,
-      platform: "GitHub",
-      username: "alex-dev",
-      profileUrl: "https://github.com/alex-dev",
-      scrapedDate: "2025-01-10",
-      status: "Active",
-      dataPoints: 24,
-    },
-    {
-      id: 2,
-      platform: "LinkedIn",
-      username: "alex-johnson-dev",
-      profileUrl: "https://linkedin.com/in/alex-johnson-dev",
-      scrapedDate: "2025-01-10",
-      status: "Active",
-      dataPoints: 8,
-    },
-    {
-      id: 3,
-      platform: "Twitter",
-      username: "@alexcodes",
-      profileUrl: "https://twitter.com/alexcodes",
-      scrapedDate: "2025-01-09",
-      status: "Active",
-      dataPoints: 12,
-    },
-    {
-      id: 4,
-      platform: "Instagram",
-      username: "alex.dev.journey",
-      profileUrl: "https://instagram.com/alex.dev.journey",
-      scrapedDate: "2025-01-08",
-      status: "Active",
-      dataPoints: 5,
-    },
-  ]
 
   // Table 2: Soft Skill Points (Extracted from Social Media)
   const softSkillPointsData = [
@@ -115,136 +113,6 @@ export default function EvidenceTracker({userData}) {
     },
   ]
 
-  // Table 3: Hard Skill Points (Extracted from Social Media & GitHub)
-  const hardSkillPointsData = [
-    {
-      id: 1,
-      skill: "JavaScript/TypeScript",
-      source: "GitHub Repositories",
-      evidence: "15 commits with JS/TS code",
-      proficiency: "Advanced",
-      points: 50,
-    },
-    {
-      id: 2,
-      skill: "React",
-      source: "GitHub Projects",
-      evidence: "3 active React projects maintained",
-      proficiency: "Intermediate",
-      points: 42,
-    },
-    {
-      id: 3,
-      skill: "Node.js",
-      source: "GitHub Repositories",
-      evidence: "Backend API implementations",
-      proficiency: "Intermediate",
-      points: 40,
-    },
-    {
-      id: 4,
-      skill: "Python",
-      source: "GitHub & LinkedIn",
-      evidence: "Data processing scripts and automation",
-      proficiency: "Beginner",
-      points: 28,
-    },
-    {
-      id: 5,
-      skill: "Database Design",
-      source: "GitHub Code Review",
-      evidence: "SQL optimization patterns in PRs",
-      proficiency: "Intermediate",
-      points: 38,
-    },
-    {
-      id: 6,
-      skill: "CSS/Tailwind",
-      source: "GitHub Projects",
-      evidence: "Responsive design implementations",
-      proficiency: "Advanced",
-      points: 45,
-    },
-    {
-      id: 7,
-      skill: "Git/Version Control",
-      source: "GitHub Activity",
-      evidence: "Clean commit history and branch management",
-      proficiency: "Advanced",
-      points: 48,
-    },
-  ]
-
-  // Table 4: Case Points (Daily Submissions & Corrections)
-  const casePointsData = [
-    {
-      id: 1,
-      date: "2025-01-10",
-      caseName: "Variables & Types",
-      submitted: true,
-      corrected: true,
-      baseScore: 95,
-      bonusPoints: 5,
-      totalScore: 100,
-      feedback: "Excellent code clarity",
-    },
-    {
-      id: 2,
-      date: "2025-01-09",
-      caseName: "Functions & Scope",
-      submitted: true,
-      corrected: true,
-      baseScore: 88,
-      bonusPoints: 0,
-      totalScore: 88,
-      feedback: "Good logic, refactor suggestions included",
-    },
-    {
-      id: 3,
-      date: "2025-01-08",
-      caseName: "Arrays & Collections",
-      submitted: true,
-      corrected: true,
-      baseScore: 92,
-      bonusPoints: 3,
-      totalScore: 95,
-      feedback: "Efficient solution with good edge case handling",
-    },
-    {
-      id: 4,
-      date: "2025-01-07",
-      caseName: "Loops & Iteration",
-      submitted: true,
-      corrected: true,
-      baseScore: 85,
-      bonusPoints: 0,
-      totalScore: 85,
-      feedback: "Correct implementation, consider optimization",
-    },
-    {
-      id: 5,
-      date: "2025-01-06",
-      caseName: "Conditionals",
-      submitted: true,
-      corrected: true,
-      baseScore: 90,
-      bonusPoints: 2,
-      totalScore: 92,
-      feedback: "Well-structured logic flow",
-    },
-    {
-      id: 6,
-      date: "2025-01-05",
-      caseName: "Data Structures",
-      submitted: true,
-      corrected: true,
-      baseScore: 88,
-      bonusPoints: 0,
-      totalScore: 88,
-      feedback: "Solid implementation, consider performance",
-    },
-  ]
-
   return (
     <div className="space-y-6">
       {/* Table 1: Social Media Scrapping */}
@@ -262,37 +130,14 @@ export default function EvidenceTracker({userData}) {
                 <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Username</th>
                 <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Profile</th>
                 <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Last Scraped</th>
-                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Status</th>
                 <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Data Points</th>
               </tr>
             </thead>
             <tbody>
-              {socialMediaData.map((row) => (
-                <tr key={row.id} className="border-b border-border/30 hover:bg-secondary/30 transition-colors">
-                  <td className="px-4 py-3">
-                    <span className="font-semibold text-foreground">{row.platform}</span>
-                  </td>
-                  <td className="px-4 py-3 text-muted-foreground">{row.username}</td>
-                  <td className="px-4 py-3">
-                    <a
-                      href={row.profileUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-accent hover:underline flex items-center gap-1"
-                    >
-                      Visit <ExternalLink className="w-3 h-3" />
-                    </a>
-                  </td>
-                  <td className="px-4 py-3 text-muted-foreground">{row.scrapedDate}</td>
-                  <td className="px-4 py-3">
-                    <span className="inline-flex items-center gap-2 px-2 py-1 rounded bg-green-500/20 text-green-400 text-xs font-semibold border border-green-500/30">
-                      <div className="w-1.5 h-1.5 rounded-full bg-green-400" />
-                      {row.status}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 font-semibold text-foreground">{row.dataPoints}</td>
-                </tr>
-              ))}
+              <SocialRow label="Github" url={userData.urlgithub} lastScrapped={lastScrappedData.github} />
+              <SocialRow label="LinkedIn" url={userData.urllinkedin} lastScrapped={lastScrappedData.linkedin} />
+              <SocialRow label="X" url={userData.urlx} lastScrapped={lastScrappedData.x} />
+              <SocialRow label="Instagram" url={userData.urlinstagram} lastScrapped={lastScrappedData.instagram} />
             </tbody>
           </table>
         </div>
@@ -317,22 +162,20 @@ export default function EvidenceTracker({userData}) {
               </tr>
             </thead>
             <tbody>
-              {softSkillPointsData.map((row) => (
+              {softSkillData.map((row) => (
                 <tr key={row.id} className="border-b border-border/30 hover:bg-secondary/30 transition-colors">
-                  <td className="px-4 py-3 text-muted-foreground">{row.source}</td>
+                  <td className="px-4 py-3 text-muted-foreground">{row.type}</td>
                   <td className="px-4 py-3">
-                    <span className="font-semibold text-green-400">{row.skill}</span>
+                    <a
+                      href={row.url}
+                      className={"flex items-center gap-1 text-accent hover:underline"}
+                    >
+                      Visit <ExternalLink className="w-3 h-3" />
+                    </a>
                   </td>
-                  <td className="px-4 py-3 text-muted-foreground max-w-xs truncate">{row.evidence}</td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-2">
-                      <div className="w-12 h-2 bg-secondary/50 rounded-full overflow-hidden">
-                        <div className="h-full bg-green-500 rounded-full" style={{ width: `${row.confidence}%` }} />
-                      </div>
-                      <span className="font-semibold text-xs whitespace-nowrap">{row.confidence}%</span>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3 font-bold text-green-400">{row.points}</td>
+                  <td className="px-4 py-3 text-muted-foreground max-w-xs">{row.notes}</td>
+                  <td className="px-4 py-3 text-muted-foreground max-w-xs">{row.subjectName}</td>
+                  <td className="px-4 py-3 font-bold text-red-400">OTW</td>
                 </tr>
               ))}
             </tbody>
@@ -351,35 +194,28 @@ export default function EvidenceTracker({userData}) {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border/50">
-                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Skill</th>
                 <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Source</th>
-                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Evidence</th>
-                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Proficiency</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Link</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Comment</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Skill</th>
                 <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Points</th>
               </tr>
             </thead>
             <tbody>
-              {hardSkillPointsData.map((row) => (
-                <tr key={row.id} className="border-b border-border/30 hover:bg-secondary/30 transition-colors">
+              {hardSkillData.map((row) => (
+                <tr key={row.url} className="border-b border-border/30 hover:bg-secondary/30 transition-colors">
+                  <td className="px-4 py-3 text-muted-foreground">{row.type}</td>
                   <td className="px-4 py-3">
-                    <span className="font-semibold text-red-400">{row.skill}</span>
-                  </td>
-                  <td className="px-4 py-3 text-muted-foreground">{row.source}</td>
-                  <td className="px-4 py-3 text-muted-foreground max-w-xs">{row.evidence}</td>
-                  <td className="px-4 py-3">
-                    <span
-                      className={`inline-flex px-2 py-1 rounded text-xs font-semibold border ${
-                        row.proficiency === "Advanced"
-                          ? "bg-red-500/20 text-red-400 border-red-500/30"
-                          : row.proficiency === "Intermediate"
-                            ? "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
-                            : "bg-blue-500/20 text-blue-400 border-blue-500/30"
-                      }`}
+                    <a
+                      href={row.url}
+                      className={"flex items-center gap-1 text-accent hover:underline"}
                     >
-                      {row.proficiency}
-                    </span>
+                      Visit <ExternalLink className="w-3 h-3" />
+                    </a>
                   </td>
-                  <td className="px-4 py-3 font-bold text-red-400">{row.points}</td>
+                  <td className="px-4 py-3 text-muted-foreground max-w-xs">{row.notes}</td>
+                  <td className="px-4 py-3 text-muted-foreground max-w-xs">{row.subjectName}</td>
+                  <td className="px-4 py-3 font-bold text-red-400">OTW</td>
                 </tr>
               ))}
             </tbody>
@@ -403,16 +239,20 @@ export default function EvidenceTracker({userData}) {
                 <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Submitted</th>
                 <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Corrected</th>
                 <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Base Score</th>
-                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Bonus</th>
-                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Total</th>
                 <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Feedback</th>
               </tr>
             </thead>
             <tbody>
-              {casePointsData.map((row) => (
+              {submissionData.map((row) => (
                 <tr key={row.id} className="border-b border-border/30 hover:bg-secondary/30 transition-colors">
-                  <td className="px-4 py-3 text-muted-foreground">{row.date}</td>
-                  <td className="px-4 py-3 font-semibold text-foreground">{row.caseName}</td>
+                  <td className="px-4 py-3 text-muted-foreground">{row.date
+                    ? new Date(row.date).toLocaleDateString('en-GB', {
+                      day: '2-digit',
+                      month: 'long',
+                      year: 'numeric',
+                    })
+                    : '-'}</td>
+                  <td className="px-4 py-3 font-semibold text-foreground">{row.subjectName}</td>
                   <td className="px-4 py-3">
                     <span className="inline-flex items-center justify-center w-6 h-6 rounded bg-green-500/20 text-green-400 text-xs">
                       ✓
@@ -423,15 +263,7 @@ export default function EvidenceTracker({userData}) {
                       ✓
                     </span>
                   </td>
-                  <td className="px-4 py-3 font-semibold text-foreground">{row.baseScore}</td>
-                  <td className="px-4 py-3">
-                    <span
-                      className={`font-semibold ${row.bonusPoints > 0 ? "text-yellow-400" : "text-muted-foreground"}`}
-                    >
-                      +{row.bonusPoints}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 font-bold text-cyan-400">{row.totalScore}</td>
+                  <td className="px-4 py-3 font-semibold text-foreground">{row.score}</td>
                   <td className="px-4 py-3 text-muted-foreground max-w-xs truncate">{row.feedback}</td>
                 </tr>
               ))}

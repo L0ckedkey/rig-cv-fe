@@ -17,7 +17,7 @@ export function Header() {
     { href: "#", label: "Manage" },
     { href: "#", label: "Correction" },
     { href: "#", label: "Presentation" },
-    { href: "#", label: "View" },
+    { href: "/trainee", label: "Trainee" },
     { href: "#", label: "Candidate" },
     { href: "/profile", label: "Profile" },
     { href: "/skill-map", label: "Skill Map" },
