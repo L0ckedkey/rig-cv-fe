@@ -1,7 +1,7 @@
 import { fetcher } from "./fetcher";
 
 export const softSkillPointApi = {
-    getDetail: () => fetcher("trainee-soft-skill-point/detail/T002"),
+    getDetail: (id: string) => fetcher("trainee-soft-skill-point/detail/"+id),
 
-    getPoint: () => fetcher("trainee-soft-skill-point/point/T002")
+    getPoint: (id: string) => fetcher("trainee-soft-skill-point/point/"+id)
 };

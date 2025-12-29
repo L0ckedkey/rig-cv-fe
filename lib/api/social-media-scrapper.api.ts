@@ -1,5 +1,5 @@
 import { fetcher } from "./fetcher";
 
 export const socialMediaScrapper = {
-    getLastScrapped: () => fetcher("social-media-scraper/last-scrapped/T002"),
+    getLastScrapped: (id: string) => fetcher("social-media-scraper/last-scrapped/"+id),
 };

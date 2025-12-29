@@ -3,7 +3,8 @@
 import { Card } from "@/components/ui/card"
 import { CheckCircle2, TrendingUp } from "lucide-react"
 
-export default function InterviewRecap() {
+export default function InterviewRecap({ questionData }) {
+  console.log(questionData)
   const traineeData = {
     name: "Alex Johnson",
     level: 5,

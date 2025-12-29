@@ -271,29 +271,6 @@ export default function EvidenceTracker({ userData, lastScrappedData, submission
           </table>
         </div>
       </Card>
-
-      {/* Summary Stats */}
-      <Card className="p-6 border-accent/30 bg-card/80 backdrop-blur">
-        <h3 className="text-lg font-bold mb-4">Evidence Summary</h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-secondary/50 rounded-lg p-4 border border-border/50">
-            <p className="text-xs text-muted-foreground mb-2">Total Data Sources</p>
-            <p className="text-2xl font-bold text-blue-400">4</p>
-          </div>
-          <div className="bg-secondary/50 rounded-lg p-4 border border-border/50">
-            <p className="text-xs text-muted-foreground mb-2">Soft Skills Identified</p>
-            <p className="text-2xl font-bold text-green-400">6</p>
-          </div>
-          <div className="bg-secondary/50 rounded-lg p-4 border border-border/50">
-            <p className="text-xs text-muted-foreground mb-2">Hard Skills Identified</p>
-            <p className="text-2xl font-bold text-red-400">7</p>
-          </div>
-          <div className="bg-secondary/50 rounded-lg p-4 border border-border/50">
-            <p className="text-xs text-muted-foreground mb-2">Cases Completed</p>
-            <p className="text-2xl font-bold text-cyan-400">6/30</p>
-          </div>
-        </div>
-      </Card>
     </div>
   )
 }

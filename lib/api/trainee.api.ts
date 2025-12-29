@@ -1,7 +1,7 @@
 import { fetcher } from "./fetcher";
 
 export const traineeApi = {
-  getTrainee: () => fetcher("trainee/T002"),
+  getTrainee: (id: string) => fetcher("trainee/"+id),
 
   getTrainees: () => fetcher("trainee"),
 

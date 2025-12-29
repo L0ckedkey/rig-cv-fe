@@ -1,6 +1,6 @@
 "use client"
 
-import { Zap, Map, TrendingUp, FileText, MessageSquare, Settings, Briefcase } from "lucide-react"
+import { Zap, Map, TrendingUp, FileText, MessageSquare, Settings, Briefcase, EyeOff } from "lucide-react"
 
 interface DashboardHeaderProps {
   activeTab: string
@@ -13,8 +13,9 @@ export default function DashboardHeader({ activeTab, onTabChange }: DashboardHea
     { id: "evidence", label: "Evidence", icon: FileText },
     { id: "interview", label: "Interview", icon: Briefcase },
     { id: "mentornotes", label: "Mentor Notes", icon: MessageSquare },
-    { id: "settings", label: "Settings", icon: Settings },
+    { id: "cheat", label: "Cheat", icon: EyeOff },
   ]
+
 
   return (
     <header className="border-b border-border bg-card/50 backdrop-blur">

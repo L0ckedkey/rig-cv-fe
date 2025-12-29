@@ -1,7 +1,7 @@
 import { fetcher } from "./fetcher";
 
 export const absentApi = {
-    getValidAbsents: () => fetcher("absents/valid-count/T002"),
+    getValidAbsents: (id: string) => fetcher("absents/valid-count/"+id),
 
     login: (data: { email: string; password: string }) =>
         fetcher("/auth/login", {

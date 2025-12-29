@@ -1,7 +1,7 @@
 import { fetcher } from "./fetcher";
 
 export const caseSolvingApi = {
-    getScore: () => fetcher("case-solving/score/T002"),
+    getScore: (id: string) => fetcher("case-solving/score/"+id),
 
-    getSubmission: () => fetcher("case-solving/submission/T002")
+    getSubmission: (id: string) => fetcher("case-solving/submission/"+id)
 };

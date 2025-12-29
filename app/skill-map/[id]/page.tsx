@@ -2,6 +2,7 @@
 
 import AnalyticsPanel from "@/components/analytics-panel"
 import CharacterProfile from "@/components/character-profile"
+import Cheat from "@/components/cheat"
 import DashboardHeader from "@/components/dashboard-header"
 import EvidenceTracker from "@/components/evidence-tracker"
 import InterviewRecap from "@/components/interview-recap"
@@ -9,7 +10,9 @@ import NodeDetailModal from "@/components/node-detail-modal"
 import SkillNodeMap from "@/components/skill-node-map"
 import { absentApi } from "@/lib/api/absent.api"
 import { caseSolvingApi } from "@/lib/api/case-solving.api"
+import { cheatApi } from "@/lib/api/cheat.api"
 import { hardSkillPointApi } from "@/lib/api/hard-skill-point.api"
+import { questionApi } from "@/lib/api/question.api"
 import { socialMediaScrapper } from "@/lib/api/social-media-scrapper.api"
 import { softSkillPointApi } from "@/lib/api/soft-skill-point.api"
 import { traineeApi } from "@/lib/api/trainee.api"
@@ -36,55 +39,69 @@ export default function SkillMap({
   const [softSkillPoint, setSoftSkillPoint] = useState(null)
   const [hardSkillPoint, setHardSkillPoint] = useState(null)
   const [radarData, setRadarData] = useState(null)
+  const [questionData, setQuestionData] = useState(null)
+  const [cheatData, setCheatData] = useState(null)
 
   const handleNodeClick = (node) => {
     setSelectedNode(node)
     setIsModalOpen(true)
   }
 
+  const { id } = params; 
+
   useEffect(() => {
-    traineeApi.getTrainee().then((res) => {
+    traineeApi.getTrainee(id).then((res) => {
+      console.log(res)
         setTraineeData(res);
     });
 
     trainingApi.getTrainingCount().then((res) => {
-      absentApi.getValidAbsents().then((res2) => {
+      absentApi.getValidAbsents(id).then((res2) => {
         const data = {"trainingSession": res, "absent": res2}
         setAbsentTrainingData(data)
+        console.log(id)
       })
     })
 
-    caseSolvingApi.getScore().then((res) => {
+    caseSolvingApi.getScore(id).then((res) => {
       setTraineeScoreData(res)
       console.log(res)
     })
 
-    socialMediaScrapper.getLastScrapped().then((res) => {
+    socialMediaScrapper.getLastScrapped(id).then((res) => {
       setLastScrappedData(res)
     })
 
-    caseSolvingApi.getSubmission().then((res) => {
+    caseSolvingApi.getSubmission(id).then((res) => {
       setSubmissionData(res)
     })
 
-    softSkillPointApi.getDetail().then((res) => {
+    softSkillPointApi.getDetail(id).then((res) => {
       setSoftSkillData(res)
     })
 
-    hardSkillPointApi.getDetail().then((res) => {
+    hardSkillPointApi.getDetail(id).then((res) => {
       setHardSkillData(res)
     })
 
-    softSkillPointApi.getPoint().then((res) => {
+    softSkillPointApi.getPoint(id).then((res) => {
       setSoftSkillPoint(res)
     })
 
-    hardSkillPointApi.getPoint().then((res) => {
+    hardSkillPointApi.getPoint(id).then((res) => {
       setHardSkillPoint(res)
     })
 
-    hardSkillPointApi.getRadarData().then((res) => {
+    hardSkillPointApi.getRadarData(id).then((res) => {
       setRadarData(res)
+    })
+
+    questionApi.getDetail(id).then((res) => {
+      setQuestionData(res)
+    })
+
+    cheatApi.getDetail(id).then((res) => {
+      setCheatData(res)
     })
 
   }, []);
@@ -115,7 +132,7 @@ export default function SkillMap({
 
         {activeTab === "interview" && (
           <div className="max-w-4xl mx-auto">
-            <InterviewRecap />
+            <InterviewRecap questionData={questionData}/>
           </div>
         )}
 
@@ -123,6 +140,12 @@ export default function SkillMap({
         {activeTab === "evidence" && (
           <div className="max-w-6xl mx-auto">
             <EvidenceTracker userData={traineeData} lastScrappedData={lastScrappedData} submissionData={submissionData} softSkillData={softSkillData} hardSkillData={hardSkillData}/>
+          </div>
+        )}
+
+        {activeTab === "cheat" && (
+          <div className="max-w-6xl mx-auto">
+            <Cheat cheatData={cheatData}/>
           </div>
         )}
 

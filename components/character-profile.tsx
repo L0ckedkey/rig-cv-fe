@@ -39,7 +39,9 @@ export default function CharacterProfile({ data, absentTrainingData, traineeScor
       {/* Character Name */}
       <div>
         <h2 className="text-xl font-bold tracking-wide">{data.code}</h2>
-        <p className="text-sm text-muted-foreground">OTW isi nama trainee</p>
+        <p className="text-sm text-muted-foreground">{data.nim}</p>
+        <p className="text-sm text-muted-foreground">{data.username}</p>
+
       </div>
 
       <div>

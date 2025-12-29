@@ -1,9 +1,9 @@
 import { fetcher } from "./fetcher";
 
 export const hardSkillPointApi = {
-    getDetail: () => fetcher("trainee-hard-skill-point/detail/T002"),
+    getDetail: (id: string) => fetcher("trainee-hard-skill-point/detail/"+id),
 
-    getPoint: () => fetcher("trainee-hard-skill-point/point/T002"),
+    getPoint: (id: string) => fetcher("trainee-hard-skill-point/point/"+id),
 
-    getRadarData: () => fetcher("trainee-hard-skill-point/radar/T002")
+    getRadarData: (id: string) => fetcher("trainee-hard-skill-point/radar/"+id)
 };
