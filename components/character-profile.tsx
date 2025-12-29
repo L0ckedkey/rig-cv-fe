@@ -26,22 +26,20 @@ export default function CharacterProfile({ data, absentTrainingData, traineeScor
     100;
   
   return (
-    <Card className="p-6 border-accent/30 bg-card/80 backdrop-blur space-y-6">
+    <Card className="p-6 border-accent/30 bg-card/80 backdrop-blur space-y-3">
       {/* Character Portrait */}
       <div className="relative group">
-        <div className="aspect-square rounded-lg bg-gradient-to-b from-accent/20 to-primary/20 border-2 border-accent/50 flex items-center justify-center overflow-hidden relative">
+        <div className="aspect-square rounded-lg bg-gradient-to-b from-accent/20 to-primary/20 border-2 border-accent/50 flex items-center justify-center overflow-hidden relative bg-red-200">
           <div className="absolute inset-0 bg-gradient-to-t from-accent/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-          <div className="text-6xl"><img src={data.profpic}></img></div>
+          <img src={data.profpic} className="w-full h-full bg-red-200"></img>
         </div>
-        <div className="absolute -top-3 -right-3 level-badge border-accent bg-background text-accent">LV {level}</div>
+        <div className="absolute -top-3 -right-3 level-badge border-accent bg-background text-accent">{data.code}</div>
       </div>
 
       {/* Character Name */}
       <div>
-        <h2 className="text-xl font-bold tracking-wide">{data.code}</h2>
+        <h2 className="text-xl font-bold tracking-wide">{data.username}</h2>
         <p className="text-sm text-muted-foreground">{data.nim}</p>
-        <p className="text-sm text-muted-foreground">{data.username}</p>
-
       </div>
 
       <div>
@@ -57,13 +55,12 @@ export default function CharacterProfile({ data, absentTrainingData, traineeScor
             style={{ width: `${progressPercent}%` }}
           />
         </div>
-        <p className="text-xs text-muted-foreground mt-2">Complete c  ase submissions to level up</p>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="flex flex-wrap gap-3">
         <div key={"Programming"} className="p-3 rounded bg-secondary/50 border border-border/50">
-          <div className="flex justify-between items-center mb-2">
+          <div className="flex justify-between items-center mb-2 w-full  gap-3">
             <span className="text-xs font-bold tracking-wide text-muted-foreground">Programming</span>
             <span className={`font-bold text-soft-skill`}>Lvl {Math.floor(traineeHardSkillPoint.point / 5)}</span>
           </div>
@@ -76,7 +73,7 @@ export default function CharacterProfile({ data, absentTrainingData, traineeScor
         </div>
         {traineeSoftSkillPoint.map((stat) => (
           <div key={stat.subjectName} className="p-3 rounded bg-secondary/50 border border-border/50">
-            <div className="flex justify-between items-center mb-2">
+            <div className="flex justify-between items-center mb-2 w-full gap-3">
               <span className="text-xs font-bold tracking-wide text-muted-foreground">{stat.subjectName}</span>
               <span className={`font-bold text-soft-skill`}>Lvl {Math.floor(stat.point / 5)}</span>
             </div>

@@ -1,6 +1,6 @@
 "use client"
 
-import { Zap, Map, TrendingUp, FileText, MessageSquare, Settings, Briefcase, EyeOff } from "lucide-react"
+import { Zap, Map, TrendingUp, FileText, MessageSquare, Settings, Briefcase, EyeOff, Globe, MessageCircleQuestion } from "lucide-react"
 
 interface DashboardHeaderProps {
   activeTab: string
@@ -10,9 +10,8 @@ interface DashboardHeaderProps {
 export default function DashboardHeader({ activeTab, onTabChange }: DashboardHeaderProps) {
   const tabs = [
     { id: "overview", label: "Overview", icon: Zap },
-    { id: "evidence", label: "Evidence", icon: FileText },
-    { id: "interview", label: "Interview", icon: Briefcase },
-    { id: "mentornotes", label: "Mentor Notes", icon: MessageSquare },
+    { id: "evidence", label: "Social Media", icon: Globe },
+    { id: "interview", label: "Question", icon: MessageCircleQuestion },
     { id: "cheat", label: "Cheat", icon: EyeOff },
   ]
 

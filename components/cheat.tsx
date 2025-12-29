@@ -1,7 +1,7 @@
 import { Card } from "./ui/card"
 
-export default function Cheat({cheatData}){
-console.log(cheatData)
+export default function Cheat({cheatData, cheatInfo}){
+
     const traineeData = {
         name: "Alex Johnson",
         level: 5,
@@ -38,21 +38,51 @@ console.log(cheatData)
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                         <div className="bg-secondary/50 rounded-lg p-4 border border-border/50">
                             <p className="text-xs text-muted-foreground mb-2">Total Cheating Cases</p>
-                            <p className="text-2xl font-bold text-accent">{traineeData.totalScore}%</p>
+                            <p className="text-2xl font-bold text-accent">{cheatInfo.cheatCase}</p>
                         </div>
                         <div className="bg-secondary/50 rounded-lg p-4 border border-border/50">
                             <p className="text-xs text-muted-foreground mb-2">Subjects Involved</p>
-                            <p className="text-2xl font-bold text-green-400">{traineeData.casesCompleted}</p>
+                            <p className="text-2xl font-bold text-green-400">{cheatInfo.count}</p>
                         </div>
                         <div className="bg-secondary/50 rounded-lg p-4 border border-border/50">
                             <p className="text-xs text-muted-foreground mb-2">Most Cheated Subject</p>
-                            <p className="text-2xl font-bold text-blue-400">{traineeData.daysActive}</p>
+                            <p className="text-2xl font-bold text-blue-400">{cheatInfo.highestSubject}</p>
                         </div>
+            
                     </div>
 
-                    <div
-                        dangerouslySetInnerHTML={{ __html: cheatData.reason }}
-                    />
+                    {cheatData?.map((cheat, idx) => (
+                        <div
+                            key={idx}
+                            className="mt-6 border border-border/50 rounded-lg overflow-hidden"
+                        >
+                            <h3 className="p-4 text-xl font-bold bg-secondary/40">{cheat.subject.name}</h3>
+                            {/* Header */}
+                            <div className="p-4 text-sm bg-secondary/40">
+                                <div
+                                    dangerouslySetInnerHTML={{
+                                        __html: cheat.reason
+                                            .split("<div class=\"row\">")[0]
+                                    }}
+                                />
+                            </div>
+
+                            {/* Code compare */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-background">
+                                {cheat.reason
+                                    .match(/<pre><code>[\s\S]*?<\/code><\/pre>/g)
+                                    ?.map((block, i) => (
+                                        <div
+                                            key={i}
+                                            className="bg-black/90 text-green-400 text-xs rounded-lg p-4 overflow-auto"
+                                            dangerouslySetInnerHTML={{ __html: block }}
+                                        />
+                                    ))}
+                            </div>
+                        </div>
+                    ))}
+
+
                 </div>
             </Card> 
         </div>

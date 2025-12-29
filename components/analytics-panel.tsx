@@ -22,18 +22,24 @@ export default function AnalyticsPanel({traineeScore, radarData}) {
   
   const MIN_AXIS = 3;
 
-  const normalizedRadarData = (() => {
-    if (!radarData || radarData.length >= MIN_AXIS) return radarData;
+  const uniqueRadarData = Object.values(
+    (radarData ?? []).reduce((acc, item) => {
+      acc[item.subjectName] = item;
+      return acc;
+    }, {})
+  );
 
-    const dummyCount = MIN_AXIS - radarData.length;
+  const normalizedRadarData =
+    uniqueRadarData.length >= MIN_AXIS
+      ? uniqueRadarData
+      : [
+        ...uniqueRadarData,
+        ...Array.from({ length: MIN_AXIS - uniqueRadarData.length }, () => ({
+          subjectName: "",
+          point: 0
+        }))
+      ];
 
-    const dummyData = Array.from({ length: dummyCount }, (_, i) => ({
-      subjectName: "",
-      point: 0
-    }));
-
-    return [...radarData, ...dummyData];
-  })();
 
   return (
     <div className="space-y-4">
@@ -68,7 +74,7 @@ export default function AnalyticsPanel({traineeScore, radarData}) {
           <RadarChart data={normalizedRadarData} style={{ aspectRatio: 1 }}>
             <PolarGrid/>
             <PolarAngleAxis dataKey="subjectName"  />
-            <Radar name="Score" dataKey="point" stroke="#a78bfa" fill="#a78bfa" fillOpacity={0.3} />
+            <Radar name="Score" dataKey="point" stroke="#a78bfa" fill="#a78bfa" fillOpacity={1} />
             <Tooltip
               contentStyle={{ backgroundColor: "rgba(239, 239, 240,1)", border: "1px solid rgba(255,255,255,0.2)" }}
             />
@@ -76,20 +82,7 @@ export default function AnalyticsPanel({traineeScore, radarData}) {
         </ResponsiveContainer>
       </Card>
 
-      {/* Milestones */}
-      <Card className="p-4 border-accent/30 bg-card/80 backdrop-blur">
-        <h4 className="text-sm font-bold mb-3">Upcoming Milestones</h4>
-        <div className="space-y-2 text-xs">
-          <div className="flex justify-between items-center p-2 rounded bg-secondary/30 border border-border/30">
-            <span>Project 1 Due</span>
-            <span className="text-accent">Day 15</span>
-          </div>
-          <div className="flex justify-between items-center p-2 rounded bg-secondary/30 border border-border/30">
-            <span>Mid-Month Review</span>
-            <span className="text-soft-skill">Day 16</span>
-          </div>
-        </div>
-      </Card>
+
     </div>
   )
 }

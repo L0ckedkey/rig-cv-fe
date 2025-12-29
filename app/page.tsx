@@ -83,6 +83,7 @@ export default function HomePage() {
     }
 
     const data = await res.json();
+  
     setUserData(data);
 
     if (data.consent === true) {

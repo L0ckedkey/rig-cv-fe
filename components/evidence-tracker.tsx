@@ -6,15 +6,17 @@ import { ExternalLink, GitBranch, Smartphone, Zap } from "lucide-react"
 function extractUsername(url: String) {
   try {
     const parts = url.split("/");
+    console.log(parts)
     let username = parts[parts.length - 1];
-
+    console.log(username)
     // Hapus query params kalau ada
     username = username.split("?")[0];
-
+    console.log(username)
     // Hapus tanda @ kalau ada (misal di Twitter)
     if (username.startsWith("@")) {
       username = username.substring(1);
     }
+    console.log(username)
     return username;
   } catch (e) {
     return null;
@@ -52,7 +54,6 @@ const SocialRow = ({ label, url, lastScrapped }) => {
         minute: '2-digit',
       }) : "No Scrape Data"}</td>
 
-      <td className="px-4 py-3 font-semibold text-foreground">OTW</td>
     </tr>
   );
 };
@@ -60,8 +61,8 @@ const SocialRow = ({ label, url, lastScrapped }) => {
 
 export default function EvidenceTracker({ userData, lastScrappedData, submissionData, softSkillData, hardSkillData }) {
   // Table 1: Social Media Scraping Data
-
   // Table 2: Soft Skill Points (Extracted from Social Media)
+  console.log(userData)
   const softSkillPointsData = [
     {
       id: 1,
@@ -123,19 +124,17 @@ export default function EvidenceTracker({ userData, lastScrappedData, submission
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-sm  table-fixed">
             <thead>
               <tr className="border-b border-border/50">
                 <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Platform</th>
                 <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Username</th>
                 <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Profile</th>
                 <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Last Scraped</th>
-                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Data Points</th>
               </tr>
             </thead>
             <tbody>
               <SocialRow label="Github" url={userData.urlgithub} lastScrapped={lastScrappedData.github} />
-              <SocialRow label="LinkedIn" url={userData.urllinkedin} lastScrapped={lastScrappedData.linkedin} />
               <SocialRow label="X" url={userData.urlx} lastScrapped={lastScrappedData.x} />
               <SocialRow label="Instagram" url={userData.urlinstagram} lastScrapped={lastScrappedData.instagram} />
             </tbody>
@@ -175,7 +174,7 @@ export default function EvidenceTracker({ userData, lastScrappedData, submission
                   </td>
                   <td className="px-4 py-3 text-muted-foreground max-w-xs">{row.notes}</td>
                   <td className="px-4 py-3 text-muted-foreground max-w-xs">{row.subjectName}</td>
-                  <td className="px-4 py-3 font-bold text-red-400">OTW</td>
+                  <td className="px-4 py-3 font-bold text-red-400">{row.point}</td>
                 </tr>
               ))}
             </tbody>
@@ -215,7 +214,7 @@ export default function EvidenceTracker({ userData, lastScrappedData, submission
                   </td>
                   <td className="px-4 py-3 text-muted-foreground max-w-xs">{row.notes}</td>
                   <td className="px-4 py-3 text-muted-foreground max-w-xs">{row.subjectName}</td>
-                  <td className="px-4 py-3 font-bold text-red-400">OTW</td>
+                  <td className="px-4 py-3 font-bold text-red-400">{row.point}</td>
                 </tr>
               ))}
             </tbody>
@@ -235,11 +234,9 @@ export default function EvidenceTracker({ userData, lastScrappedData, submission
             <thead>
               <tr className="border-b border-border/50">
                 <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Date</th>
-                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Case Name</th>
-                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Submitted</th>
-                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Corrected</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Subject Name</th>
                 <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Base Score</th>
-                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Feedback</th>
+                
               </tr>
             </thead>
             <tbody>
@@ -253,16 +250,7 @@ export default function EvidenceTracker({ userData, lastScrappedData, submission
                     })
                     : '-'}</td>
                   <td className="px-4 py-3 font-semibold text-foreground">{row.subjectName}</td>
-                  <td className="px-4 py-3">
-                    <span className="inline-flex items-center justify-center w-6 h-6 rounded bg-green-500/20 text-green-400 text-xs">
-                      ✓
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className="inline-flex items-center justify-center w-6 h-6 rounded bg-blue-500/20 text-blue-400 text-xs">
-                      ✓
-                    </span>
-                  </td>
+                 
                   <td className="px-4 py-3 font-semibold text-foreground">{row.score}</td>
                   <td className="px-4 py-3 text-muted-foreground max-w-xs truncate">{row.feedback}</td>
                 </tr>

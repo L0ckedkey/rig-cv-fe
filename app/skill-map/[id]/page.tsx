@@ -41,6 +41,8 @@ export default function SkillMap({
   const [radarData, setRadarData] = useState(null)
   const [questionData, setQuestionData] = useState(null)
   const [cheatData, setCheatData] = useState(null)
+  const [cheatInfo, setCheatInfo] = useState(null)
+  const [absentDetail, setAbsentDetail] = useState(null)
 
   const handleNodeClick = (node) => {
     setSelectedNode(node)
@@ -51,7 +53,7 @@ export default function SkillMap({
 
   useEffect(() => {
     traineeApi.getTrainee(id).then((res) => {
-      console.log(res)
+      
         setTraineeData(res);
     });
 
@@ -59,13 +61,11 @@ export default function SkillMap({
       absentApi.getValidAbsents(id).then((res2) => {
         const data = {"trainingSession": res, "absent": res2}
         setAbsentTrainingData(data)
-        console.log(id)
       })
     })
 
     caseSolvingApi.getScore(id).then((res) => {
       setTraineeScoreData(res)
-      console.log(res)
     })
 
     socialMediaScrapper.getLastScrapped(id).then((res) => {
@@ -97,11 +97,21 @@ export default function SkillMap({
     })
 
     questionApi.getDetail(id).then((res) => {
+      console.log(res)
       setQuestionData(res)
     })
 
     cheatApi.getDetail(id).then((res) => {
+      console.log(res)
       setCheatData(res)
+    })
+
+    cheatApi.getInfo(id).then((res) => {
+      setCheatInfo(res)
+    })
+
+    absentApi.getDetail(id).then((res) => {
+      setAbsentDetail(res)
     })
 
   }, []);
@@ -112,9 +122,9 @@ export default function SkillMap({
 
       <main className="p-6 space-y-6">
         {activeTab === "overview" && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-14 gap-6">
             {/* Left Panel - Character Profile */}
-            <div className="lg:col-span-3">
+            <div className="lg:col-span-4">
               <CharacterProfile data={traineeData} absentTrainingData={absentTrainingData} traineeScore={traineeScoreData} traineeHardSkillPoint={hardSkillPoint} traineeSoftSkillPoint={softSkillPoint}/>
             </div>
 
@@ -124,7 +134,7 @@ export default function SkillMap({
             </div>
 
             {/* Right Panel - Analytics */}
-            <div className="lg:col-span-3">
+            <div className="lg:col-span-4">
               <AnalyticsPanel traineeScore={traineeScoreData} radarData={radarData}/>
             </div>
           </div>
@@ -132,7 +142,7 @@ export default function SkillMap({
 
         {activeTab === "interview" && (
           <div className="max-w-4xl mx-auto">
-            <InterviewRecap questionData={questionData}/>
+            <InterviewRecap traineeData={traineeData} questionData={questionData} absentDetail={absentDetail} caseSolvingScore={traineeScoreData}/>
           </div>
         )}
 
@@ -145,7 +155,7 @@ export default function SkillMap({
 
         {activeTab === "cheat" && (
           <div className="max-w-6xl mx-auto">
-            <Cheat cheatData={cheatData}/>
+            <Cheat cheatData={cheatData} cheatInfo={cheatInfo}/>
           </div>
         )}
 

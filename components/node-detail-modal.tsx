@@ -132,17 +132,7 @@ export default function NodeDetailModal({ isOpen, onClose, node }: NodeDetailMod
           )}
 
           {/* Mentor Notes */}
-          {nodeDetails.mentorNotes && (
-            <div>
-              <p className="text-xs font-semibold text-muted-foreground mb-2 flex items-center gap-2">
-                <User className="w-3 h-3" />
-                MENTOR NOTES
-              </p>
-              <p className="text-sm text-foreground/80 p-3 rounded bg-secondary/30 border border-border/50 italic">
-                "{nodeDetails.mentorNotes}"
-              </p>
-            </div>
-          )}
+         
 
           {/* Action Buttons */}
           {nodeDetails.status === "available" && (

@@ -3,22 +3,41 @@
 import { Card } from "@/components/ui/card"
 import { CheckCircle2, TrendingUp } from "lucide-react"
 
-export default function InterviewRecap({ questionData }) {
-  console.log(questionData)
-  const traineeData = {
-    name: "Alex Johnson",
-    level: 5,
-    completionPercentage: 42,
-    totalScore: 88,
-    programmingSkill: 92,
-    communicationSkill: 85,
-    leadershipSkill: 78,
-    problemSolving: 88,
-    consistency: 95,
-    daysActive: 12,
-    casesCompleted: 12,
-    attendance: "100%",
-  }
+export default function InterviewRecap({ traineeData, questionData, absentDetail, caseSolvingScore }) {
+  const parsedReason = questionData?.reason
+    ? JSON.parse(questionData.reason)
+    : []
+ 
+
+  // const questionData = [
+  //   {
+  //     category: "Adaptability",
+  //     questions: [
+  //       {
+  //         question: "Ceritakan pengalaman Anda ketika harus cepat beradaptasi dengan perubahan mendadak di tempat kerja.",
+  //         reason: "Untuk menilai kemampuan kandidat dalam menyesuaikan diri dengan situasi baru yang berpotensi mengganggu keseimbangan kerja."
+  //       },
+  //       {
+  //         question: "Bagaimana Anda menghadapi situasi saat prioritas pekerjaan tiba-tiba berubah?",
+  //         reason: "Untuk memahami bagaimana kandidat mengelola perubahan dalam prioritas dan tetap efektif."
+  //       },
+  //       {
+  //         question: "Bisakah Anda memberikan contoh saat Anda harus belajar keterampilan baru di luar zona nyaman Anda?",
+  //         reason: "Untuk mengevaluasi kesiapan kandidat dalam mengembangkan diri menghadapi kebutuhan baru."
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     category: "Communication",
+  //     questions: [
+  //       {
+  //         question: "Bagaimana cara Anda menyampaikan ide ke tim?",
+  //         reason: "Menilai kemampuan komunikasi."
+  //       }
+  //     ]
+  //   }
+  // ];
+
 
   const recommendedQuestions = [
     {
@@ -66,32 +85,28 @@ export default function InterviewRecap({ questionData }) {
           {/* Header with name and level */}
           <div className="flex items-start justify-between border-b border-border/50 pb-4">
             <div>
-              <h2 className="text-3xl font-bold text-accent">{traineeData.name}</h2>
-              <p className="text-sm text-muted-foreground mt-1">Training Program - Month 1</p>
+              <h2 className="text-3xl font-bold text-accent">{traineeData.username}</h2>
+              <p className="text-xs text-muted-foreground mt-1">{traineeData.nim}</p>
             </div>
             <div className="text-right">
-              <div className="text-4xl font-bold text-accent">LV {traineeData.level}</div>
-              <p className="text-xs text-muted-foreground mt-1">{traineeData.completionPercentage}% Complete</p>
+              <div className="text-4xl font-bold text-accent">{traineeData.code}</div>
             </div>
+              
           </div>
 
           {/* Key Metrics Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div className="bg-secondary/50 rounded-lg p-4 border border-border/50">
-              <p className="text-xs text-muted-foreground mb-2">Overall Score</p>
-              <p className="text-2xl font-bold text-accent">{traineeData.totalScore}%</p>
+              <p className="text-xs text-muted-foreground mb-2">Attendance Rate</p>
+              <p className="text-2xl font-bold text-accent">{absentDetail.attandance}%</p>
             </div>
             <div className="bg-secondary/50 rounded-lg p-4 border border-border/50">
-              <p className="text-xs text-muted-foreground mb-2">Cases Completed</p>
-              <p className="text-2xl font-bold text-green-400">{traineeData.casesCompleted}</p>
+              <p className="text-xs text-muted-foreground mb-2">Suspected Cheating Cases</p>
+              <p className="text-2xl font-bold text-green-400">{absentDetail.cheat}</p>
             </div>
             <div className="bg-secondary/50 rounded-lg p-4 border border-border/50">
-              <p className="text-xs text-muted-foreground mb-2">Days Active</p>
-              <p className="text-2xl font-bold text-blue-400">{traineeData.daysActive}</p>
-            </div>
-            <div className="bg-secondary/50 rounded-lg p-4 border border-border/50">
-              <p className="text-xs text-muted-foreground mb-2">Attendance</p>
-              <p className="text-2xl font-bold text-purple-400">{traineeData.attendance}</p>
+              <p className="text-xs text-muted-foreground mb-2">Top Subject (Highest Average Score)</p>
+              <p className="text-xl font-bold text-blue-400">{absentDetail.subject}</p>
             </div>
           </div>
 
@@ -99,20 +114,14 @@ export default function InterviewRecap({ questionData }) {
           <div className="space-y-3">
             <p className="text-sm font-semibold text-foreground">Skill Assessment</p>
             <div className="space-y-3">
-              {[
-                { label: "Programming Skill", value: traineeData.programmingSkill, color: "bg-red-500" },
-                { label: "Communication Skill", value: traineeData.communicationSkill, color: "bg-green-500" },
-                { label: "Leadership Skill", value: traineeData.leadershipSkill, color: "bg-cyan-500" },
-                { label: "Problem Solving", value: traineeData.problemSolving, color: "bg-blue-500" },
-                { label: "Consistency", value: traineeData.consistency, color: "bg-purple-500" },
-              ].map((skill) => (
+              {caseSolvingScore.map((skill) => (
                 <div key={skill.label} className="space-y-1">
                   <div className="flex justify-between items-center text-xs">
-                    <span className="text-muted-foreground">{skill.label}</span>
-                    <span className="font-semibold text-foreground">{skill.value}%</span>
+                    <span className="text-muted-foreground">{skill.subjectName}</span>
+                    <span className="font-semibold text-foreground">{skill.averageScore}</span>
                   </div>
                   <div className="w-full bg-secondary/50 rounded-full h-2">
-                    <div className={`h-full rounded-full ${skill.color}`} style={{ width: `${skill.value}%` }} />
+                    <div className={`h-full rounded-full bg-blue-500`} style={{ width: `${skill.averageScore}%` }} />
                   </div>
                 </div>
               ))}
@@ -120,22 +129,7 @@ export default function InterviewRecap({ questionData }) {
           </div>
 
           {/* Highlights */}
-          <div className="grid md:grid-cols-2 gap-4 border-t border-border/50 pt-4">
-            <div className="flex items-start gap-3">
-              <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-              <div>
-                <p className="font-semibold text-sm">Strength</p>
-                <p className="text-xs text-muted-foreground mt-0.5">Consistent attendance and submission pattern</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <TrendingUp className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
-              <div>
-                <p className="font-semibold text-sm">Growth Area</p>
-                <p className="text-xs text-muted-foreground mt-0.5">Leadership & team collaboration skills</p>
-              </div>
-            </div>
-          </div>
+        
         </div>
       </Card>
 
@@ -144,26 +138,38 @@ export default function InterviewRecap({ questionData }) {
         <h3 className="text-xl font-bold mb-6">Recommended Interview Questions</h3>
 
         <div className="space-y-8">
-          {recommendedQuestions.map((section, idx) => (
+          {parsedReason.map((cat, idx) => (
             <div key={idx}>
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-2 h-2 rounded-full bg-accent" />
-                <h4 className="text-sm font-bold text-accent uppercase tracking-wider">{section.category}</h4>
+                <h4 className="text-sm font-bold text-accent uppercase tracking-wider">
+                  {cat.category}
+                </h4>
               </div>
+
+              {console.log(cat)}
+
               <div className="space-y-3 ml-5">
-                {section.questions.map((question, qIdx) => (
+                {cat.questions?.map((q, qIdx) => (
                   <div
                     key={qIdx}
                     className="flex gap-4 p-3 rounded-lg bg-secondary/30 border border-border/50 hover:border-accent/50 transition-colors"
                   >
-                    <div className="text-xs font-semibold text-accent/70 flex-shrink-0 pt-1">Q{qIdx + 1}</div>
-                    <p className="text-sm text-foreground leading-relaxed">{question}</p>
+                    <div className="text-xs font-semibold text-accent/70 flex-shrink-0 pt-1">
+                      Q{qIdx + 1}
+                    </div>
+
+                    <p className="text-sm text-foreground leading-relaxed">
+                      {q.question}
+                    </p>
                   </div>
                 ))}
               </div>
             </div>
           ))}
         </div>
+
+
 
         {/* Interview Tips */}
         <div className="mt-8 p-4 bg-accent/10 border border-accent/30 rounded-lg">

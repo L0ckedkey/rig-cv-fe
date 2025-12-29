@@ -106,7 +106,7 @@ export default function Trainee(){
                                             item.profpic?
                                                 <img
                                                     src={item.profpic}
-                                                    className="w-[8vw] h-[12vw] object-cover rounded"
+                                                    className="w-full h-full object-cover rounded"
                                                     alt="trainee photo"
                                                 />
                                                 : 

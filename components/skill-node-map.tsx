@@ -123,15 +123,18 @@ const LoadGraph = ({hardSkillData, softSkillData}) => {
    Page Component
 ================================ */
 export default function SkillNodeMap({softSkillData, hardSkillData}) {
+  const uniqueBySubjectName = Array.from(
+    new Map(hardSkillData?.map(item => [item.subjectName, item])).values()
+  );
   return (
-    <Card className="p-6 border-accent/30 bg-card/80 backdrop-blur h-full min-h-[600px] flex flex-col">
+    <Card className="p-6 border-accent/30 bg-card/80 backdrop-blur h-[50vw] flex flex-col">
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-bold">Skill Development Path</h3>
       </div>
 
       <div className="relative flex-1 bg-secondary/20 rounded-lg border border-border/50 overflow-hidden">
         <SigmaContainer style={sigmaStyle} >
-          {softSkillData && hardSkillData ? <LoadGraph softSkillData={softSkillData} hardSkillData={hardSkillData} /> : <h2>Loading</h2> }
+          {softSkillData && hardSkillData ? <LoadGraph softSkillData={softSkillData} hardSkillData={uniqueBySubjectName} /> : <h2>Loading</h2> }
         </SigmaContainer>
       </div>
     </Card>
