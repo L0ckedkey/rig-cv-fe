@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card"
 import { Flame, CheckCircle2 } from "lucide-react"
 import AchievementBadges from "./achievement-badges"
 import { useState } from "react"
+import SocialEmbed from "./social-embed"
 
 export default function CharacterProfile({ data, absentTrainingData, traineeScore, traineeHardSkillPoint, traineeSoftSkillPoint, traineeDetail }) {
   const stats = [

@@ -24,9 +24,8 @@ export default function DashboardHeader({ activeTab, onTabChange }: DashboardHea
             <div className="w-8 h-8 rounded bg-accent/20 flex items-center justify-center border border-accent/50">
               <Zap className="w-5 h-5 text-accent" />
             </div>
-            <h1 className="text-2xl font-bold tracking-tight">Training Quest</h1>
+            <h1 className="text-2xl font-bold tracking-tight">Trainee Quest</h1>
           </div>
-          <div className="text-sm text-muted-foreground">Month 1 • Week 2</div>
         </div>
 
         <nav className="flex gap-1 overflow-x-auto">

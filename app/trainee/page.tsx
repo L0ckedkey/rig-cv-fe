@@ -4,6 +4,7 @@ import { Header } from "@/components/header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { traineeApi } from "@/lib/api/trainee.api";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 
@@ -96,6 +97,7 @@ export default function Trainee(){
 
                             <div className="flex justify-evenly gap-y-[1.5vw] flex-wrap ">
                                 {trainees.map((item) => (
+                                    <Link href={`/skill-map/${item.code}`}>
                                     <div
                                         key={item.id}
                                         className="w-fit max-w-xs p-2 border border-gray-300 rounded-md bg-white flex justify-center items-center flex-col gap-[1vw]"
@@ -120,8 +122,10 @@ export default function Trainee(){
                                         <div className="flex items-center justify-center flex-col gap-2">
                                             <div>{item.code}</div>
                                             <div>{item.username}</div>
+                                            <div>{item.nim}</div>
                                         </div>
                                     </div>
+                                    </Link>
                                 ))}
                             </div>
                         </CardContent>
