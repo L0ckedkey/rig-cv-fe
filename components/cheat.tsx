@@ -28,10 +28,7 @@ export default function Cheat({cheatData, cheatInfo}){
                             <h2 className="text-3xl font-bold text-accent">Sandyka Bala</h2>
                             <p className="text-sm text-muted-foreground mt-1">2540118536</p>
                         </div>
-                        <div className="text-right">
-                            <div className="text-4xl font-bold text-accent">LV 0</div>
-                            <p className="text-xs text-muted-foreground mt-1">{traineeData.completionPercentage}% Complete</p>
-                        </div>
+                       
                     </div>
 
                     {/* Key Metrics Grid */}

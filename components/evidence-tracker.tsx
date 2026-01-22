@@ -156,7 +156,7 @@ export default function EvidenceTracker({ userData, lastScrappedData, submission
                 <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Data Source</th>
                 <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Skill</th>
                 <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Evidence</th>
-                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Confidence</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Type</th>
                 <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Points</th>
               </tr>
             </thead>
@@ -174,7 +174,7 @@ export default function EvidenceTracker({ userData, lastScrappedData, submission
                   </td>
                   <td className="px-4 py-3 text-muted-foreground max-w-xs">{row.notes}</td>
                   <td className="px-4 py-3 text-muted-foreground max-w-xs">{row.subjectName}</td>
-                  <td className="px-4 py-3 font-bold text-red-400">{row.point}</td>
+                  <td className="px-4 py-3 font-bold text-green-400">{row.point}</td>
                 </tr>
               ))}
             </tbody>
@@ -214,7 +214,7 @@ export default function EvidenceTracker({ userData, lastScrappedData, submission
                   </td>
                   <td className="px-4 py-3 text-muted-foreground max-w-xs">{row.notes}</td>
                   <td className="px-4 py-3 text-muted-foreground max-w-xs">{row.subjectName}</td>
-                  <td className="px-4 py-3 font-bold text-red-400">{row.point}</td>
+                  <td className="px-4 py-3 font-bold text-green-400">{row.point}</td>
                 </tr>
               ))}
             </tbody>
